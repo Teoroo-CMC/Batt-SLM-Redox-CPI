@@ -1,5 +1,5 @@
 # Batt-SLM-Redox-CPI
-This repository provides the battery solvent-like molecules (Batt-SLM) dataset, redox potential prediction models and chelation propensity index (CPI) associated with the manuscript "Unlocking the Chemical Space for Rechargeable Batteries with a Generative Solvent Design System" (https://chemrxiv.org/doi/full/10.26434/chemrxiv.15001594/v1).
+This repository provides the battery solvent-like molecules (Batt-SLM) dataset, redox potential prediction models and chelation propensity index (CPI) associated with the manuscript "Unlocking the Chemical Space for Rechargeable Batteries with a Generative Solvent Design System" (https://doi.org/10.26434/chemrxiv.15001594/v1).
 
 # Project structure
 In the following project structure, _*_ denotes the random seed, _<...>_ indicates an arbitrary sequence of characters.
@@ -9,16 +9,16 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 │   ├── Batt-SLM.smi                        # The Batt-SLM for training the generators
 │   ├── KBS-409.csv                         # The known battery solvents (KBS) dataset
 │   ├── KBS-FP-174.smi                      # The molecules in KBS-409 with either F or P
-│   └── filter_smiles.py                    # The python code to filter molecules  
+│   └── filter_smiles.py                    # The python code to filter molecules from given SMILES
 ├── Redox-Pot/                              # Directory: the ML models for redox potential prediction
-│   ├── EAIP/                               # The Batt-P30K dataset and PiNet2 models for EA/IP
+│   ├── EAIP/                               
 │   │   ├── Batt-P30K.h5                    # The Batt-P30K dataset 
 │   │   ├── io/                             # The dataloader for Batt-P30K.h5 in the PiNN package 
 │   │   │   │                                  (https://github.com/Teoroo-CMC/PiNN/tree/master)
 │   │   │   ├── __init__.py                 # The python code to initialize the dataloader
-│   │   └── └── hdf5_gsds.py                # The python code to load the Batt-P30K dataset
+│   │   │   └── hdf5_gsds.py                # The python code to load the Batt-P30K dataset
 │   │   ├── Models/                          
-│   │   │   └── {IP,EA}/                    # The PiNet2-P3 models of EA and IP  
+│   │   │   └── {IP,EA}/                    # The PiNet2 models of EA and IP  
 │   │   │       └── PiNet2-<...>-B10-3E6-*/ # <...> is a key in {IP,EA}
 │   │   │           ├── eval/events.<...>   # The validation event file
 │   │   │           ├── checkpoint          # The file storing the paths of actual checkpoint files
@@ -27,11 +27,11 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 │   │   │           ├── events.<...>        # The training event files
 │   │   │           └── model.ckpt-<...>    # The actual Tensorflow checkpoint files
 │   │   └── build_pinet2.py                 # The python code to build PiNet2 models
-│   ├──Redox-Ener/                          # The linear fitting between EA/IP and redox free energies
+│   ├── Redox-Ener/                         # The linear fitting of EA/IP vs redox free energies
 │   │   ├── RX-392.csv                      # The RX-392 dataset
 │   │   ├── Input/
-│   │   │   ├── IE-Ox.csv                   # The IP and oxidation potentials in RX-392 dataset
-│   │   │   └── EA-Red.csv                  # The EA and reduction potentials in RX-392 dataset
+│   │   │   ├── IE-Ox.csv                   # The IP and oxidation free energy in RX-392 dataset
+│   │   │   └── EA-Red.csv                  # The EA and reduction free energy in RX-392 dataset
 │   │   ├── LR-EAIP-RedoxFreeEner/                
 │   │   │   └── EAIP_Redox.jpg              # The linear fitting results
 │   │   └── redox_free_ener.py              # The python code for linear fitting
@@ -46,9 +46,9 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 │   │   └── Features-NoF-predictions.csv    # The prediction results on mols without F atoms
 │   ├── RandomTest/
 │   │   ├── final.txt                       # The final evaluation results of CPI
-│   │   ├── result-*.txt                    # The results of CPI at a given spliting
-│   │   ├── train_*_results.csv             # The training results at a given spliting
-│   │   └── valid_*_results.csv             # The validation results at a given spliting
+│   │   ├── result-*.txt                    # The evaluation results of CPI at a given seed
+│   │   ├── train_*_results.csv             # The training results at a given seed
+│   │   └── valid_*_results.csv             # The validation results at a given seed
 │   ├── ExternalTest/
 │   │   ├── results.txt                     # The external test results of CPI
 │   │   ├── external_set.csv                # The new collected WSE and CDE
@@ -60,32 +60,39 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 │   ├── external_test.py                    # The python code for external test
 └── environment.yml                         # The conda environment file for the project
 ```
-# Training PiNet2 models for EA/IP
+# Installation
++ download the project repo
 ```
 git clone https://github.com/zzy2014/GSDS.git
 ```
 + create the conda environment
 ```
-cd GSDS
+cd Batt-SLM-Redox-CPI
 conda env create -f environment.yml
 conda activate gsds
 ```
 + install the PiNN package
 ```
 pip install git+https://github.com/Teoroo-CMC/PiNN.git --no-deps
-cp -r {GSDS_DIR}/2_Batt-P30K/io {PiNN_DIR}/
-```
-+ install the GraphINVENT2 package
-```
-cd ..
-git clone https://github.com/ailab-bio/GraphINVENT2.git
-cp -r {GSDS_DIR}/9_molecular_generators/graphinvent GraphINVENT2
-cp -r GraphINVENT2/graphinvent {GSDS_DIR}/9_molecular_generators/
-```
-+ export the gsds project path to PYTHONPATH
-```
-export PYTHONPATH={GSDS_DIR}:$PYTHONPATH
-export PYTHONPATH={GSDS_DIR}/9_molecular_generators/graphinvent:$PYTHONPATH
+cp -r {PROJ_DIR}/Redox-Pot/EAIP/io {PiNN_DIR}/
 ```
 
-# Build the CPI models
+# Usage
++ training PiNet2 models for EA/IP on GPU
+```
+cd {PROJ_DIR}/Redox-Pot/EAIP
+python build_pinet2.py
+```
++ predicting redox potentials for given XYZ files
+```
+cd {PROJ_DIR}/Redox-Pot/
+mkdir XYZ
+# copy your *.xyz files to XYZ/ folder
+python redox_potential.py
+```
++ predicting CPIs for given molecules
+```
+cd {PROJ_DIR}/CPI/
+# using the predict_cpi function
+python chelation_propensity_index.py
+```
