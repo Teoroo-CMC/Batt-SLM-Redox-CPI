@@ -1,40 +1,42 @@
 # Batt-SLM-Redox-CPI
-This repository provides the battery solvent-like molecules dataset Batt-SLM, redox potential prediction models and chelation propensity index (CPI) associated with the manuscript "Unlocking the Chemical Space for Rechargeable Batteries with a Generative Solvent Design System" (https://chemrxiv.org/doi/full/10.26434/chemrxiv.15001594/v1).
+This repository provides the battery solvent-like molecules (Batt-SLM) dataset, redox potential prediction models and chelation propensity index (CPI) associated with the manuscript "Unlocking the Chemical Space for Rechargeable Batteries with a Generative Solvent Design System" (https://chemrxiv.org/doi/full/10.26434/chemrxiv.15001594/v1).
 
 # Project structure
+In the following project structure, _*_ denotes the random seed, _<...>_ indicates an arbitrary sequence of characters.
 ```text
-Batt-SLM/
-├── 1_Batt-SLM/                              # Directory: the battery solvent-like molecules
-│   ├── Batt-SLM-PriorI.smi                  # The Batt-SLM for training the prior I
-│   ├── KBS-409.csv                          # The placeholder for the KBS-409 dataset
-│   ├── KBS-FP-174.smi                       # The placeholder for molecules in the KBS-409 with either F or P
-│   └── filter_smiles.py                     # The python code to filter SMILES according to the 
-│                                              selection criteria listed in Section 1 of the SI
-├── 7_redox_free_ener/                       # Directory: the ML models for redox potential prediction
-├── 2_Batt-P30K/                             # Directory: the Batt-P30K dataset
-│   ├── Batt-P30K.h5                         # The placeholder for the Batt-P30K dataset 
-│   ├── io/                                  # The dataloader for Batt-P30K.h5 in the PiNN package 
+.
+├── Batt-SLM/                                # Directory: the battery solvent-like molecules
+│   ├── KBS-409.csv                          # The known battery solvents (KBS) dataset
+│   ├── KBS-FP-174.smi                       # The molecules in KBS-409 with either F or P
+│   └── Batt-SLM.smi                         # The Batt-SLM for training the generators
+│   └── filter_smiles.py                     # The python code to build Batt-SLM from sources  
+├── Redox-Pot/                                   # Directory: the ML models for redox potential prediction
+│   ├──EAIP/                                 # Directory: the Batt-P30K dataset and the training of EA/IP predictors
+│   │   ├── Batt-P30K.h5                     # The placeholder for the Batt-P30K dataset 
+│   │   ├──io/                                  # The dataloader for Batt-P30K.h5 in the PiNN package 
 │   │   │                                      (https://github.com/Teoroo-CMC/PiNN/tree/master)
-│   │   ├── __init__.py                      # The python code to initialize the dataloader
-│   │   └── hdf5_gsds.py                     # The python code to load the Batt-P30K dataset
-│   ├── Models/                               
-│   │   └── {HOMO,LUMO,IP,EA,Dipole}/        # The PiNet2-P3 models of HOMO/LUMO/IP/EA/Dipole    
-│   │       └── PiNet2-<...>-B10-3E6-*/      # <...> is a key in {HOMO,LUMO,IP,EA,Dipole}
-│   │           ├── eval/events.<...>        # The validation event file
-│   │           ├── checkpoint               # The file storing the paths of actual checkpoint files
-│   │           ├── params.yml               # The hyper-parameter file
-│   │           ├── graph.pbtxt              # The text-format file of TensorFlow computation graph
-│   │           ├── events.<...>             # The training event files
-│   │           └── model.ckpt-<...>         # The actual Tensorflow checkpoint files
-│   └── build_pinet2.py                      # The python code to build PiNet2-P3 models
-│   ├── RX-392.csv                           # The RX-392 dataset
-│   ├── Input/
-│   │   ├── IE-Ox.csv                        # The IP and oxidation potentials in RX-392 dataset
-│   │   └── EA-Red.csv                       # The EA and reduction potentials in RX-392 dataset
-│   ├── LR-EAIP-RedoxFreeEner/                
-│   │   └── EAIP_Redox.jpg                   # The linear fitting results
-│   └── redox_free_ener.py                   # The python code for linear fitting      
-├── 8_CPI_index/                             # Diectory: the chelation propensity index (CPI) model
+│   │   │   ├── __init__.py                      # The python code to initialize the dataloader
+│   │   └── └── hdf5_gsds.py                     # The python code to load the Batt-P30K dataset
+│   │   ├──Models/                               
+│   │   │   └── {IP,EA}/                         # The PiNet2-P3 models of EA and IP  
+│   │   │       └── PiNet2-<...>-B10-3E6-*/      # <...> is a key in {HOMO,LUMO,IP,EA,Dipole}
+│   │               ├── eval/events.<...>        # The validation event file
+│   │               ├── checkpoint               # The file storing the paths of actual checkpoint files
+│   │               ├── params.yml               # The hyper-parameter file
+│   │               ├── graph.pbtxt              # The text-format file of TensorFlow computation graph
+│   │               ├── events.<...>             # The training event files
+│   │               └── model.ckpt-<...>         # The actual Tensorflow checkpoint files
+│   │   └── build_pinet2.py                      # The python code to build PiNet2-P3 models
+│   ├──Redox-Ener/
+│   │   ├── RX-392.csv                           # The RX-392 dataset
+│   │   ├── Input/
+│   │   │   ├── IE-Ox.csv                        # The IP and oxidation potentials in RX-392 dataset
+│   │   │   └── EA-Red.csv                       # The EA and reduction potentials in RX-392 dataset
+│   │   ├── LR-EAIP-RedoxFreeEner/                
+│   │   │   └── EAIP_Redox.jpg                   # The linear fitting results
+│   │   └── redox_free_ener.py                   # The python code for linear fitting
+│   ├──redox_potential.py                        # The python code for predicting redox potential          
+├── CPI/                                     # Diectory: the chelation propensity index (CPI) model
 │   ├── SolvFunc-87.csv                      # The functions of collected solvents in battery
 │   ├── Input/
 │   │   ├── Features.csv                     # The features of all solvents in Fig. 5 of main text
