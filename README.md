@@ -5,47 +5,60 @@ This repository provides the battery solvent-like molecules (Batt-SLM) dataset, 
 In the following project structure, _*_ denotes the random seed, _<...>_ indicates an arbitrary sequence of characters.
 ```text
 .
-├── Batt-SLM/                                # Directory: the battery solvent-like molecules
-│   ├── KBS-409.csv                          # The known battery solvents (KBS) dataset
-│   ├── KBS-FP-174.smi                       # The molecules in KBS-409 with either F or P
-│   └── Batt-SLM.smi                         # The Batt-SLM for training the generators
-│   └── filter_smiles.py                     # The python code to build Batt-SLM from sources  
-├── Redox-Pot/                                   # Directory: the ML models for redox potential prediction
-│   ├──EAIP/                                 # Directory: the Batt-P30K dataset and the training of EA/IP predictors
-│   │   ├── Batt-P30K.h5                     # The placeholder for the Batt-P30K dataset 
-│   │   ├──io/                                  # The dataloader for Batt-P30K.h5 in the PiNN package 
-│   │   │                                      (https://github.com/Teoroo-CMC/PiNN/tree/master)
-│   │   │   ├── __init__.py                      # The python code to initialize the dataloader
-│   │   └── └── hdf5_gsds.py                     # The python code to load the Batt-P30K dataset
-│   │   ├──Models/                               
-│   │   │   └── {IP,EA}/                         # The PiNet2-P3 models of EA and IP  
-│   │   │       └── PiNet2-<...>-B10-3E6-*/      # <...> is a key in {HOMO,LUMO,IP,EA,Dipole}
-│   │               ├── eval/events.<...>        # The validation event file
-│   │               ├── checkpoint               # The file storing the paths of actual checkpoint files
-│   │               ├── params.yml               # The hyper-parameter file
-│   │               ├── graph.pbtxt              # The text-format file of TensorFlow computation graph
-│   │               ├── events.<...>             # The training event files
-│   │               └── model.ckpt-<...>         # The actual Tensorflow checkpoint files
-│   │   └── build_pinet2.py                      # The python code to build PiNet2-P3 models
-│   ├──Redox-Ener/
-│   │   ├── RX-392.csv                           # The RX-392 dataset
+├── Batt-SLM/                               # Directory: the battery solvent-like molecules
+│   ├── Batt-SLM.smi                        # The Batt-SLM for training the generators
+│   ├── KBS-409.csv                         # The known battery solvents (KBS) dataset
+│   ├── KBS-FP-174.smi                      # The molecules in KBS-409 with either F or P
+│   └── filter_smiles.py                    # The python code to filter molecules  
+├── Redox-Pot/                              # Directory: the ML models for redox potential prediction
+│   ├── EAIP/                               # The Batt-P30K dataset and PiNet2 models for EA/IP
+│   │   ├── Batt-P30K.h5                    # The Batt-P30K dataset 
+│   │   ├── io/                             # The dataloader for Batt-P30K.h5 in the PiNN package 
+│   │   │   │                                  (https://github.com/Teoroo-CMC/PiNN/tree/master)
+│   │   │   ├── __init__.py                 # The python code to initialize the dataloader
+│   │   └── └── hdf5_gsds.py                # The python code to load the Batt-P30K dataset
+│   │   ├── Models/                          
+│   │   │   └── {IP,EA}/                    # The PiNet2-P3 models of EA and IP  
+│   │   │       └── PiNet2-<...>-B10-3E6-*/ # <...> is a key in {IP,EA}
+│   │   │           ├── eval/events.<...>   # The validation event file
+│   │   │           ├── checkpoint          # The file storing the paths of actual checkpoint files
+│   │   │           ├── params.yml          # The hyper-parameter file
+│   │   │           ├── graph.pbtxt         # The text-format file of TensorFlow computation graph
+│   │   │           ├── events.<...>        # The training event files
+│   │   │           └── model.ckpt-<...>    # The actual Tensorflow checkpoint files
+│   │   └── build_pinet2.py                 # The python code to build PiNet2 models
+│   ├──Redox-Ener/                          # The linear fitting between EA/IP and redox free energies
+│   │   ├── RX-392.csv                      # The RX-392 dataset
 │   │   ├── Input/
-│   │   │   ├── IE-Ox.csv                        # The IP and oxidation potentials in RX-392 dataset
-│   │   │   └── EA-Red.csv                       # The EA and reduction potentials in RX-392 dataset
+│   │   │   ├── IE-Ox.csv                   # The IP and oxidation potentials in RX-392 dataset
+│   │   │   └── EA-Red.csv                  # The EA and reduction potentials in RX-392 dataset
 │   │   ├── LR-EAIP-RedoxFreeEner/                
-│   │   │   └── EAIP_Redox.jpg                   # The linear fitting results
-│   │   └── redox_free_ener.py                   # The python code for linear fitting
-│   ├──redox_potential.py                        # The python code for predicting redox potential          
-├── CPI/                                     # Diectory: the chelation propensity index (CPI) model
-│   ├── SolvFunc-87.csv                      # The functions of collected solvents in battery
+│   │   │   └── EAIP_Redox.jpg              # The linear fitting results
+│   │   └── redox_free_ener.py              # The python code for linear fitting
+│   └── redox_potential.py                  # The python code for predicting redox potential         
+├── CPI/                                    # Diectory: the chelation propensity index (CPI) model
+│   ├── SolvFunc-87.csv                     # The functions of collected solvents in battery
 │   ├── Input/
-│   │   ├── Features.csv                     # The features of all solvents in Fig. 5 of main text
-│   │   └── Features-NoF.csv                 # The features of non-F solvents to build the CPI
+│   │   ├── Features.csv                    # The features of all solvents in Fig. 5 of main text
+│   │   └── Features-NoF.csv                # The features of non-F solvents to build the CPI
 │   ├── LogR-CPI/
-│   │   ├── result.txt                       # The logistic regression results for CPI
-│   │   └── Features-NoF-predictions.csv     # The prediction results on mols without F atoms
-│   └── chelation_propensity_index.py        # The python code for CPI     
-└── environment.yml                          # The conda environment file for gsds project
+│   │   ├── result.txt                      # The logistic regression results for CPI
+│   │   └── Features-NoF-predictions.csv    # The prediction results on mols without F atoms
+│   ├── RandomTest/
+│   │   ├── final.txt                       # The final evaluation results of CPI
+│   │   ├── result-*.txt                    # The results of CPI at a given spliting
+│   │   ├── train_*_results.csv             # The training results at a given spliting
+│   │   └── valid_*_results.csv             # The validation results at a given spliting
+│   ├── ExternalTest/
+│   │   ├── results.txt                     # The external test results of CPI
+│   │   ├── external_set.csv                # The new collected WSE and CDE
+│   │   ├── external_set-filters.csv        # The new collected WSE and CDE passed filters
+│   │   ├── external_set-filters-features.csv # The features of filtered WSE and CDE
+│   │   └── external_set-filters-features-predictions.csv # The prediction results
+│   ├── chelation_propensity_index.py       # The python code for CPI
+│   ├── random_test.py                      # The python code for evaluation
+│   ├── external_test.py                    # The python code for external test
+└── environment.yml                         # The conda environment file for the project
 ```
 # Training PiNet2 models for EA/IP
 ```
