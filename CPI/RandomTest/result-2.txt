@@ -1,0 +1,27 @@
+Features = ['SASA(O/N,max)' 'Num(13O)' 'Num(14O)' 'Num(15O)']
+Feature mean values before normalized =  [6.40568640e+01 4.64124216e-01 1.52606892e-01 1.00000000e-06]
+Feature mean values after normalized =  [1. 1. 1. 0.]
+Num of WSE =  16
+Num of CDE =  21
+-------------------coefficient and intercept_----------------
+(0.394)*(SASA(O/N,max))+(0.088)*(Num(13O))+(0.049)*(Num(14O))+(0.000)*(Num(15O))+(-0.013)
+--------------------train------------------
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00        16
+         1.0       1.00      1.00      1.00        21
+
+    accuracy                           1.00        37
+   macro avg       1.00      1.00      1.00        37
+weighted avg       1.00      1.00      1.00        37
+
+--------------------valid------------------
+              precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00         5
+         1.0       1.00      1.00      1.00         4
+
+    accuracy                           1.00         9
+   macro avg       1.00      1.00      1.00         9
+weighted avg       1.00      1.00      1.00         9
+
