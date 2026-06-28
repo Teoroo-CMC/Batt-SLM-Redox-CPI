@@ -59,7 +59,7 @@ In the following repository structure, _*_ denotes the random seed, _<...>_ indi
 └── environment.yml                         # The conda environment file for the project
 ```
 
-# Structure of the Batt-P30K dataset
+# Description of the Batt-P30K dataset
 The dataset is stored in HDF5 (.h5) format. Each molecule is saved as an individual HDF5 group, where the group name corresponds to the molecule ID. Every group contains the molecular structure together with its computed electronic properties at the ωB97X-V/def2-TZVPPD/SMD(ε=18.5) level of theory.
 
 ```text
