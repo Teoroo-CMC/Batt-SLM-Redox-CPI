@@ -15,8 +15,8 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 │   │   ├── __init__.py                     # The python code to initialize the dataloader
 │   │   └── hdf5_gsds.py                    # The python code to load the Batt-P30K dataset
 │   ├── Models/                          
-│   │   └── {IP,EA}/                        # The PiNet2 models of EA and IP  
-│   │       └── PiNet2-<...>-B10-3E6-*/     # <...> is a key in {IP,EA}
+│   │   └── {HOMO,LUMO,IP,EA,Dipole}/       # The PiNet2 models  
+│   │       └── PiNet2-<...>-B10-3E6-*/     # <...> is a key in {HOMO,LUMO,IP,EA,Dipole}
 │   │           ├── eval/events.<...>       # The validation event file
 │   │           ├── checkpoint              # The file storing the paths of actual checkpoint files
 │   │           ├── params.yml              # The hyper-parameter file
