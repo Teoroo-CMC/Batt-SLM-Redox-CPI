@@ -59,15 +59,15 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 └── environment.yml                         # The conda environment file for the project
 ```
 
-# Batt-P30K.h5 structure
-The dataset is stored in HDF5 (.h5) format. Each molecule is saved as an individual HDF5 group, where the group name corresponds to the molecule ID. Every group contains the molecular structure together with its computed electronic properties.
+# Structure of the Batt-P30K dataset
+The dataset is stored in HDF5 (.h5) format. Each molecule is saved as an individual HDF5 group, where the group name corresponds to the molecule ID. Every group contains the molecular structure together with its computed electronic properties at the ωB97X-V/def2-TZVPPD/SMD(ε=18.5) level of theory.
 
 ```text
 Batt-P30k.h5
-├── <CompMol0>
+├── CompMol0
 │   ├── smiles          # SMILES string
 │   ├── elems           # Atomic element symbols
-│   ├── coord           # Cartesian coordinates (N_atoms × 3)
+│   ├── coord           # Cartesian coordinates
 │   ├── ener            # Neutral molecule energy
 │   ├── ener_anion      # Anion energy
 │   ├── ener_cation     # Cation energy
@@ -76,9 +76,9 @@ Batt-P30k.h5
 │   ├── gap             # HOMO-LUMO gap
 │   ├── ea              # Electron affinity (EA)
 │   ├── ip              # Ionization potential (IP)
-│   ├── dipole          # Dipole moment vector (3,)
-│   └── quadrupole      # Quadrupole tensor components (6,)
-├── <CompMol1>
+│   ├── dipole          # Dipole moment
+│   └── quadrupole      # Quadrupole moment
+├── CompMol1
 │   └── ...
 └── ...
 ```
@@ -86,7 +86,7 @@ Batt-P30k.h5
 | Field | Shape | Type | Description |
 |-------|-------|------|-------------|
 | `smiles` | `(1,)` | `string` | Canonical SMILES representation of the molecule. |
-| `elems` | `(N_atoms,)` | `string` | Atomic element symbols in the same order as the coordinates. |
+| `elems` | `(N_atoms,)` | `string` | Atomic element symbols. |
 | `coord` | `(N_atoms, 3)` | `float32` | Cartesian coordinates of all atoms (Å). |
 | `ener` | `(1,)` | `float32` | Total energy of the neutral molecule. |
 | `ener_anion` | `(1,)` | `float32` | Total energy of the anion. |
@@ -96,8 +96,8 @@ Batt-P30k.h5
 | `gap` | `(1,)` | `float32` | HOMO–LUMO energy gap. |
 | `ea` | `(1,)` | `float32` | Electron affinity (EA). |
 | `ip` | `(1,)` | `float32` | Ionization potential (IP). |
-| `dipole` | `(3,)` | `float32` | Dipole moment vector `(x, y, z)`. |
-| `quadrupole` | `(6,)` | `float32` | Six independent components of the quadrupole tensor. |
+| `dipole` | `(3,)` | `float32` | Dipole moment `(x, y, z)`. |
+| `quadrupole` | `(6,)` | `float32` | Six independent components of the quadrupole moment. |
 
 # Installation
 + download the project repo
