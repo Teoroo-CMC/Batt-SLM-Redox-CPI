@@ -61,6 +61,8 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 
 # Batt-P30K.h5 structure
 The dataset is stored in HDF5 (.h5) format. Each molecule is saved as an individual HDF5 group, where the group name corresponds to the molecule ID. Every group contains the molecular structure together with its computed electronic properties.
+
+```text
 Batt-P30k.h5
 ├── <CompMol0>
 │   ├── smiles          # SMILES string
@@ -79,6 +81,7 @@ Batt-P30k.h5
 ├── <CompMol1>
 │   └── ...
 └── ...
+```
 
 | Field | Shape | Type | Description |
 |-------|-------|------|-------------|
