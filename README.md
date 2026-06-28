@@ -1,4 +1,4 @@
-# Batt-SLM-Redox-CPI
+# Batt-SLM
 This repository provides the battery solvent-like molecules (Batt-SLM) dataset, redox potential prediction models and chelation propensity index (CPI) associated with the manuscript "Unlocking the Chemical Space for Rechargeable Batteries with a Generative Solvent Design System" (https://doi.org/10.26434/chemrxiv.15001594/v1).
 
 # Project structure
@@ -7,26 +7,24 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 .
 ├── Batt-SLM/                               # Directory: the battery solvent-like molecules
 │   ├── Batt-SLM.smi                        # The Batt-SLM for training the generators
-│   ├── KBS-409.csv                         # The known battery solvents (KBS) dataset
-│   ├── KBS-FP-174.smi                      # The molecules in KBS-409 with either F or P
 │   └── filter_smiles.py                    # The python code to filter molecules from given SMILES
+├── Batt-P30K/                               
+│   ├── Batt-P30K.h5                        # The Batt-P30K dataset 
+│   ├── io/                                 # The dataloader for Batt-P30K.h5 in the PiNN package 
+│   │   │                                   (https://github.com/Teoroo-CMC/PiNN/tree/master)
+│   │   ├── __init__.py                     # The python code to initialize the dataloader
+│   │   └── hdf5_gsds.py                    # The python code to load the Batt-P30K dataset
+│   ├── Models/                          
+│   │   └── {IP,EA}/                        # The PiNet2 models of EA and IP  
+│   │       └── PiNet2-<...>-B10-3E6-*/     # <...> is a key in {IP,EA}
+│   │           ├── eval/events.<...>       # The validation event file
+│   │           ├── checkpoint              # The file storing the paths of actual checkpoint files
+│   │           ├── params.yml              # The hyper-parameter file
+│   │           ├── graph.pbtxt             # The text-format file of TensorFlow computation graph
+│   │           ├── events.<...>            # The training event files
+│   │           └── model.ckpt-<...>        # The actual Tensorflow checkpoint files
+│   └── build_pinet2.py                     # The python code to build PiNet2 models
 ├── Redox-Pot/                              # Directory: the ML models for redox potential prediction
-│   ├── EAIP/                               
-│   │   ├── Batt-P30K.h5                    # The Batt-P30K dataset 
-│   │   ├── io/                             # The dataloader for Batt-P30K.h5 in the PiNN package 
-│   │   │   │                                  (https://github.com/Teoroo-CMC/PiNN/tree/master)
-│   │   │   ├── __init__.py                 # The python code to initialize the dataloader
-│   │   │   └── hdf5_gsds.py                # The python code to load the Batt-P30K dataset
-│   │   ├── Models/                          
-│   │   │   └── {IP,EA}/                    # The PiNet2 models of EA and IP  
-│   │   │       └── PiNet2-<...>-B10-3E6-*/ # <...> is a key in {IP,EA}
-│   │   │           ├── eval/events.<...>   # The validation event file
-│   │   │           ├── checkpoint          # The file storing the paths of actual checkpoint files
-│   │   │           ├── params.yml          # The hyper-parameter file
-│   │   │           ├── graph.pbtxt         # The text-format file of TensorFlow computation graph
-│   │   │           ├── events.<...>        # The training event files
-│   │   │           └── model.ckpt-<...>    # The actual Tensorflow checkpoint files
-│   │   └── build_pinet2.py                 # The python code to build PiNet2 models
 │   ├── Redox-Ener/                         # The linear fitting of EA/IP vs redox free energies
 │   │   ├── RX-392.csv                      # The RX-392 dataset
 │   │   ├── Input/
@@ -63,25 +61,25 @@ In the following project structure, _*_ denotes the random seed, _<...>_ indicat
 # Installation
 + download the project repo
 ```
-git clone https://github.com/Teoroo-CMC/Batt-SLM-Redox-CPI.git
+git clone https://github.com/Teoroo-CMC/Batt-SLM.git
 ```
 + create the conda environment
 ```
-cd Batt-SLM-Redox-CPI
+cd Batt-SLM
 conda env create -f environment.yml
 conda activate gsds
 ```
 + install the PiNN package
 ```
 pip install git+https://github.com/Teoroo-CMC/PiNN.git --no-deps
-cp -r {PROJ_DIR}/Redox-Pot/EAIP/io {PiNN_DIR}/
+cp -r {PROJ_DIR}/Batt-P30K/io {PiNN_DIR}/
 ```
 
 # Usage
 + training PiNet2 models for EA/IP on GPU
 ```
-# Note: you may need to manually download the Redox-Pot/EAIP/Battery-P30K.h5 file
-cd {PROJ_DIR}/Redox-Pot/EAIP
+# Note: you may need to manually download the Batt-P30K/Battery-P30K.h5 file
+cd {PROJ_DIR}/Batt-P30K
 python build_pinet2.py
 ```
 + predicting redox potentials for given XYZ files
