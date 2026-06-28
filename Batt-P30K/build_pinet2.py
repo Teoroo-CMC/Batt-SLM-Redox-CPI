@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
 
-EAIP_DIR = Path("your_own_path/Batt-SLM-Redox-CPI/Redox-Pot/EAIP/")
+WORK_DIR = Path("your_own_path/Batt-P30K/")
 
 # create predictor directory
-if not os.path.exists(EAIP_DIR / "Models"):
-    os.mkdir(EAIP_DIR / "Models")
+if not os.path.exists(WORK_DIR / "Models"):
+    os.mkdir(WORK_DIR / "Models")
 
 # build PiNet2-P3 Model
 def build_pinet2_model(target_label, random_seed):
@@ -53,7 +53,7 @@ def build_pinet2_model(target_label, random_seed):
     # tf.get_logger().setLevel('ERROR')
 
     label_to_folder = {"homo":"HOMO", "lumo":"LUMO", "ea":"EA", "ip":"IP", "dipole":"Dipole"}
-    lable_predictor_dir = EAIP_DIR / "Models" / label_to_folder[target_label]
+    lable_predictor_dir = WORK_DIR / "Models" / label_to_folder[target_label]
     if not os.path.exists(lable_predictor_dir):
         os.mkdir(lable_predictor_dir)
     print(lable_predictor_dir)
@@ -62,7 +62,7 @@ def build_pinet2_model(target_label, random_seed):
     key_in_pinn = "e_data"
     if target_label == "dipole":
         key_in_pinn = "d_data"
-    dataset = load_hdf5(str(EAIP_DIR / "Batt-P30K.h5"), label_map={key_in_pinn: target_label}, splits={'train':split_training_ratio,
+    dataset = load_hdf5(str(WORK_DIR / "Batt-P30K.h5"), label_map={key_in_pinn: target_label}, splits={'train':split_training_ratio,
                         'vali':10-split_training_ratio}, shuffle=is_shuffle, seed=random_seed)
     write_tfrecord(str(lable_predictor_dir) + '-train-%s-%d.yml'%(target_label, random_seed), dataset['train'])
     write_tfrecord(str(lable_predictor_dir) + '-vali-%s-%d.yml'%(target_label, random_seed), dataset['vali'])

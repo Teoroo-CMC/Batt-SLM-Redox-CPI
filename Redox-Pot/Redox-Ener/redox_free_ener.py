@@ -3,7 +3,7 @@ import math
 import numpy as np
 from pathlib import Path
 
-REDOX_ENER_DIR = Path("your_own_path/Batt-SLM-Redox-CPI/Redox-Pot/Redox-Ener/")
+REDOX_ENER_DIR = Path("your_own_path/Redox-Pot/Redox-Ener/")
 
 # directory of the intermediate files
 INPUT_DIR = REDOX_ENER_DIR / "Input"

@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from pathlib import Path
 
-CPI_DIR = Path("your_own_path/Batt-SLM-Redox-CPI/CPI")
+CPI_DIR = Path("your_own_path/CPI")
 
 # directory of the intermediate files
 INPUT_DIR = CPI_DIR / "Input"

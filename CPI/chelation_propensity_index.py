@@ -3,7 +3,7 @@ import sys
 import numpy as np
 from pathlib import Path
 
-CPI_DIR = Path("your_own_path/Batt-SLM-Redox-CPI/CPI")
+CPI_DIR = Path("your_own_path/CPI")
 
 # directory of the intermediate files
 INPUT_DIR = CPI_DIR / "Input"
@@ -394,9 +394,9 @@ def predict_cpi():
 # 
 if __name__ == "__main__":
 
-    gen_mol_feature_files()
+    # gen_mol_feature_files()
 
-    train_logistic_classifer()
+    # train_logistic_classifer()
 
     predict_cpi()
 

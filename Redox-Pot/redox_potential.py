@@ -3,8 +3,8 @@ import math
 import numpy as np
 from pathlib import Path
 
-REDOX_POT_DIR = Path("your_own_path/Batt-SLM-Redox-CPI/Redox-Pot")
-EAIP_MODEL_DIR = REDOX_POT_DIR / "EAIP" / "Models"
+REDOX_POT_DIR = Path("your_own_path/Redox-Pot")
+MODEL_DIR = Path("your_own_path/Batt-P30K/Models")
 
 # predict the ea/ip and output to a file
 def predict_energy_by_pinet2(pinet2_model_path, xyz_path):
@@ -51,8 +51,8 @@ def predict_redox_potential():
     XYZ_DIR = str(REDOX_POT_DIR) + "/XYZ/"
 
     # predict EA
-    mol_to_ea = predict_energy_by_pinet2(str(EAIP_MODEL_DIR) + "/EA/", str(XYZ_DIR))
-    mol_to_ip = predict_energy_by_pinet2(str(EAIP_MODEL_DIR) + "/IP/", str(XYZ_DIR))
+    mol_to_ea = predict_energy_by_pinet2(str(MODEL_DIR) + "/EA/", str(XYZ_DIR))
+    mol_to_ip = predict_energy_by_pinet2(str(MODEL_DIR) + "/IP/", str(XYZ_DIR))
 
     #
     file_name = []
